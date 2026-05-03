@@ -20,7 +20,7 @@ def show_tasks():
         print("Tidak ada task.")
         return
 
-    print("\n=== DAFTAR TASK ===")
+    print("\n---DAFTAR TASK---")
     for i, task in enumerate(tasks, 1):
         print(
             f"{i}. {task['title']} "
