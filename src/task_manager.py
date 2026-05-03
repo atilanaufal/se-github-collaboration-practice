@@ -15,17 +15,10 @@ def save_tasks(tasks):
 
 def show_tasks():
     tasks = load_tasks()
-
-    if not tasks:
-        print("Tidak ada task.")
-        return
-
-    print("\n---DAFTAR TASK---")
-    for i, task in enumerate(tasks, 1):
+    print("\nDaftar Task:")
+    for task in tasks:
         print(
-            f"{i}. {task['title']} "
-            f"[{task['status']}] "
-            f"(Priority: {task['priority']}, PIC: {task['assignee']})"
+            f"{task['id']}. {task['title']} | Status: {task['status']} | PIC: {task['assignee']}"
         )
 
 
