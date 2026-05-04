@@ -48,45 +48,49 @@ def add_task():
 
 def update_status():
     tasks = load_tasks()
+    try:
+        task_id = int(input("Masukkan ID task: "))
+        new_status = input("Status baru (todo/in_progress/done): ")
 
-    task_id = int(input("Masukkan ID task: "))
-    new_status = input("Status baru todo/in_progress/done: ")
-
-    for task in tasks:
-        if task["id"] == task_id:
-            task["status"] = new_status
-            save_tasks(tasks)
-            print("Status berhasil diubah.")
-            return
-
-    print("Task tidak ditemukan.")
+        for task in tasks:
+            if task["id"] == task_id:
+                task["status"] = new_status
+                save_tasks(tasks)
+                print("Status berhasil diubah.")
+                return
+        print("Task tidak ditemukan.")
+    except ValueError:
+        print("Input ID harus berupa angka.")
 
 
 def delete_task():
     tasks = load_tasks()
+    try:
+        task_id = int(input("Masukkan ID task yang akan dihapus: "))
+        new_tasks = [task for task in tasks if task["id"] != task_id]
 
-    task_id = int(input("Masukkan ID task yang akan dihapus: "))
-
-    new_tasks = [task for task in tasks if task["id"] != task_id]
-
-    if len(new_tasks) == len(tasks):
-        print("Task tidak ditemukan.")
-    else:
-        save_tasks(new_tasks)
-        print("Task berhasil dihapus.")
+        if len(new_tasks) == len(tasks):
+            print(f"Task dengan ID {task_id} tidak ditemukan.")
+        else:
+            save_tasks(new_tasks)
+            print(f"Task dengan ID {task_id} berhasil dihapus.")
+    except ValueError:
+        print("Error: Input ID harus berupa angka.")
 
 
 def search_by_assignee():
     tasks = load_tasks()
+    query = input("Masukkan nama assignee yang dicari: ").lower()
+    
+    results = [t for t in tasks if query in t.get("assignee", "").lower()]
 
-    keyword = input("Masukkan nama assignee: ").lower()
-    results = [task for task in tasks if keyword in task["assignee"].lower()]
-
-    if not results:
-        print("Task tidak ditemukan.")
+    if results:
+        print(f"\n--- Hasil Pencarian untuk '{query}' ---")
+        for t in results:
+            task_name = t.get('task') or t.get('title') or "Tanpa Judul"
+            task_id = t.get('id', 'N/A')
+            task_status = t.get('status', 'N/A')
+            
+            print(f"ID: {task_id} | Task: {task_name} | Status: {task_status}")
     else:
-        print("\nHasil pencarian:")
-        for task in results:
-            print(
-                f"{task['id']}. {task['title']} | Status: {task['status']} | PIC:{task['assignee']}"
-            )
+        print(f"Tidak ada task yang ditemukan untuk assignee: {query}")
