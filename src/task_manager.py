@@ -48,18 +48,19 @@ def add_task():
 
 def update_status():
     tasks = load_tasks()
+    try:
+        task_id = int(input("Masukkan ID task: "))
+        new_status = input("Status baru (todo/in_progress/done): ")
 
-    task_id = int(input("Masukkan ID task: "))
-    new_status = input("Status baru todo/in_progress/done: ")
-
-    for task in tasks:
-        if task["id"] == task_id:
-            task["status"] = new_status
-            save_tasks(tasks)
-            print("Status berhasil diubah.")
-            return
-
-    print("Task tidak ditemukan.")
+        for task in tasks:
+            if task["id"] == task_id:
+                task["status"] = new_status
+                save_tasks(tasks)
+                print("Status berhasil diubah.")
+                return
+        print("Task tidak ditemukan.")
+    except ValueError:
+        print("Input ID harus berupa angka.")
 
 
 def delete_task():
