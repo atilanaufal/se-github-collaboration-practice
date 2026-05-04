@@ -65,16 +65,17 @@ def update_status():
 
 def delete_task():
     tasks = load_tasks()
+    try:
+        task_id = int(input("Masukkan ID task yang akan dihapus: "))
+        new_tasks = [task for task in tasks if task["id"] != task_id]
 
-    task_id = int(input("Masukkan ID task yang akan dihapus: "))
-
-    new_tasks = [task for task in tasks if task["id"] != task_id]
-
-    if len(new_tasks) == len(tasks):
-        print("Task tidak ditemukan.")
-    else:
-        save_tasks(new_tasks)
-        print("Task berhasil dihapus.")
+        if len(new_tasks) == len(tasks):
+            print(f"Task dengan ID {task_id} tidak ditemukan.")
+        else:
+            save_tasks(new_tasks)
+            print(f"Task dengan ID {task_id} berhasil dihapus.")
+    except ValueError:
+        print("Error: Input ID harus berupa angka.")
 
 
 def search_by_assignee():
