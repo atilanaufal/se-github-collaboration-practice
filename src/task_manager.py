@@ -87,6 +87,10 @@ def search_by_assignee():
     if results:
         print(f"\n--- Hasil Pencarian untuk '{query}' ---")
         for t in results:
-            print(f"ID: {t['id']} | Task: {t['task']} | Status: {t['status']}")
+            task_name = t.get('task') or t.get('title') or "Tanpa Judul"
+            task_id = t.get('id', 'N/A')
+            task_status = t.get('status', 'N/A')
+            
+            print(f"ID: {task_id} | Task: {task_name} | Status: {task_status}")
     else:
         print(f"Tidak ada task yang ditemukan untuk assignee: {query}")
