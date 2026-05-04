@@ -80,15 +80,13 @@ def delete_task():
 
 def search_by_assignee():
     tasks = load_tasks()
+    query = input("Masukkan nama assignee yang dicari: ").lower()
+    
+    results = [t for t in tasks if query in t.get("assignee", "").lower()]
 
-    keyword = input("Masukkan nama assignee: ").lower()
-    results = [task for task in tasks if keyword in task["assignee"].lower()]
-
-    if not results:
-        print("Task tidak ditemukan.")
+    if results:
+        print(f"\n--- Hasil Pencarian untuk '{query}' ---")
+        for t in results:
+            print(f"ID: {t['id']} | Task: {t['task']} | Status: {t['status']}")
     else:
-        print("\nHasil pencarian:")
-        for task in results:
-            print(
-                f"{task['id']}. {task['title']} | Status: {task['status']} | PIC:{task['assignee']}"
-            )
+        print(f"Tidak ada task yang ditemukan untuk assignee: {query}")
