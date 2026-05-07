@@ -48,32 +48,34 @@ def add_task():
 
 def update_status():
     tasks = load_tasks()
+    try:
+        task_id = int(input("Masukkan ID task: "))
+        new_status = input("Status baru (todo/in_progress/done): ")
 
-    task_id = int(input("Masukkan ID task: "))
-    new_status = input("Status baru todo/in_progress/done: ")
-
-    for task in tasks:
-        if task["id"] == task_id:
-            task["status"] = new_status
-            save_tasks(tasks)
-            print("Status berhasil diubah.")
-            return
-
-    print("Task tidak ditemukan.")
+        for task in tasks:
+            if task["id"] == task_id:
+                task["status"] = new_status
+                save_tasks(tasks)
+                print("Status berhasil diubah.")
+                return
+        print("Task tidak ditemukan.")
+    except ValueError:
+        print("Input ID harus berupa angka.")
 
 
 def delete_task():
     tasks = load_tasks()
+    try:
+        task_id = int(input("Masukkan ID task yang akan dihapus: "))
+        new_tasks = [task for task in tasks if task["id"] != task_id]
 
-    task_id = int(input("Masukkan ID task yang akan dihapus: "))
-
-    new_tasks = [task for task in tasks if task["id"] != task_id]
-
-    if len(new_tasks) == len(tasks):
-        print("Task tidak ditemukan.")
-    else:
-        save_tasks(new_tasks)
-        print("Task berhasil dihapus.")
+        if len(new_tasks) == len(tasks):
+            print(f"Task dengan ID {task_id} tidak ditemukan.")
+        else:
+            save_tasks(new_tasks)
+            print(f"Task dengan ID {task_id} berhasil dihapus.")
+    except ValueError:
+        print("Error: Input ID harus berupa angka.")
 
 
 def search_by_assignee():
@@ -90,3 +92,42 @@ def search_by_assignee():
             print(
                 f"{task['id']}. {task['title']} | Status: {task['status']} | PIC:{task['assignee']}"
             )
+
+def get_all_tasks(tasks):
+    return tasks
+
+
+def add_task_data(tasks, title, description, priority, assignee):
+    new_id = 1 if len(tasks) == 0 else max(task["id"] for task in tasks) + 1
+
+    new_task = {
+        "id": new_id,
+        "title": title,
+        "description": description,
+        "status": "todo",
+        "priority": priority,
+        "assignee": assignee,
+    }
+
+    tasks.append(new_task)
+    return tasks
+
+
+def update_task_status(tasks, task_id, new_status):
+    for task in tasks:
+        if task["id"] == task_id:
+            task["status"] = new_status
+            return tasks
+
+    return tasks
+
+
+def delete_task_data(tasks, task_id):
+    return [task for task in tasks if task["id"] != task_id]
+
+
+def search_task_by_assignee(tasks, keyword):
+    return [
+        task for task in tasks
+        if keyword.lower() in task["assignee"].lower()
+    ]
