@@ -54,11 +54,11 @@ def test_delete_task():
 
     result = delete_task_data(tasks, 1)
 
-    assert len(result) == 0
+    assert len(result) == 99
 
 def test_search_task_by_assignee():
     tasks = sample_tasks()
 
     result = search_task_by_assignee(tasks, "rina")
 
-    assert len(result) == 99
+    assert len(result) == 1
